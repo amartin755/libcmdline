@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /*
- * TCPPUMP <https://github.com/amartin755/tcppump>
+ * LIBCMDLINE <https://github.com/amartin755/libcmdline>
  * Copyright (C) 2012-2021 Andreas Martin (netnag@mailbox.org)
  *
  * This program is free software: you can redistribute it and/or modify
