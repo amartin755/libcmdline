@@ -39,11 +39,16 @@ public:
             this->build = build;
             this->buildDetails = buildDetails;
 
-            this->helpRequested = 0;
-            this->versionRequested = 0;
+            helpRequested = 0;
+            versionRequested = 0;
+            verbosity = 0;
 
             cmdline.addOption  (true, 'h', "help", "Display this text", &helpRequested, nullptr, ARG_NO, nullptr, false, true);
             cmdline.addOption  (true, 0, "version", "Show detailed version infos", &versionRequested, nullptr, ARG_NO, nullptr, false, true);
+            addCmdLineOption (true, 'v', "verbose",
+                    "When parsing and printing, produce verbose output. This option can be supplied multiple times\n\t"
+                    "(max. 4 times, i.e. -vvvv) for even more debug output. "
+                    , &verbosity);
     }
     virtual ~cCmdlineApp ()
     {
@@ -52,6 +57,22 @@ public:
     {
         int index = 0;
         bool parseOk = cmdline.parse (argc, argv, &index);
+
+        switch (verbosity)
+        {
+        case 1:
+            Console::SetPrintLevel(Console::Verbose);
+            break;
+        case 2:
+            Console::SetPrintLevel(Console::MoreVerbose);
+            break;
+        case 3:
+            Console::SetPrintLevel(Console::MostVerbose);
+            break;
+        case 4:
+            Console::SetPrintLevel(Console::Debug);
+            break;
+        }
 
         if (helpRequested)
         {
@@ -138,6 +159,7 @@ private:
     const char* buildDetails;
     int helpRequested;
     int versionRequested;
+    int verbosity;
     cCmdline cmdline;
 };
 
