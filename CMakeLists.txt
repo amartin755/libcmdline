@@ -70,8 +70,10 @@ endif ()
 
 # example demo application
 ###############################################################################
-add_executable (example)
+if (WITH_DEMO)
+    add_executable (example)
 
-target_link_libraries (example PRIVATE cmdline)
-target_sources(example PRIVATE example/example.cpp)
-target_include_directories (example PRIVATE ${LIB_DIR})
+    target_link_libraries (example PRIVATE cmdline)
+    target_sources(example PRIVATE example/example.cpp)
+    target_include_directories (example PRIVATE ${LIB_DIR})
+endif ()
