@@ -107,6 +107,12 @@ bool Console::PrintDebug (const char* format, ...)
     return ret;
 }
 
+void Console::Clear ()
+{
+    Console::Print ("%c[2J", (char)27);
+    Console::Print ("%c[H", (char)27);
+}
+
 bool Console::print (out_level lvl, const char* format, va_list ap)
 {
     if (lvl > level)

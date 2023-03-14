@@ -34,6 +34,7 @@ public:
     static bool PrintMoreVerbose (const char* format, ...);
     static bool PrintMostVerbose (const char* format, ...);
     static bool PrintDebug (const char* format, ...);
+    static void Clear ();
 
     enum out_level {Silent = 1, Error = 2, Normal = 3, Verbose = 4, MoreVerbose = 5, MostVerbose = 6, Debug = 7};
     static void SetPrintLevel (out_level lvl);
