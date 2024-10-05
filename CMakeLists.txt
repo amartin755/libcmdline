@@ -50,7 +50,7 @@ set (LIB_SOURCES
 
 target_sources (cmdline PRIVATE ${LIB_SOURCES})
 target_include_directories (cmdline
-    PRIVATE ${LIB_DIR})
+    PUBLIC ${LIB_DIR})
 
 # target unittest (unit test code)
 ###############################################################################
