@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /*
  * LIBCMDLINE <https://github.com/amartin755/libcmdline>
- * Copyright (C) 2012-2021 Andreas Martin (netnag@mailbox.org)
+ * Copyright (C) 2012-2025 Andreas Martin (netnag@mailbox.org)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,5 +42,6 @@ static inline void __game_over (const char* expr, const char* file, int line)
       : void (0))
 
 #define BUG(msg) __game_over (#msg, __FILE__, __LINE__)
+#define BUG_IF_NOT(expr) BUG_ON (!(expr))
 
 #endif /* BUGON_HPP */
