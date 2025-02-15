@@ -18,7 +18,17 @@ set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # warning level
-add_compile_options (-Wall -Wextra -Wpedantic -fstack-protector-all)
+if (MSVC)
+    add_compile_options (/W3 /wd5208)
+    if (WITH_WERROR)
+        add_compile_options (/WX)
+    endif ()
+else()
+    add_compile_options (-Wall -Wextra -Wpedantic)
+    if (WITH_WERROR)
+        add_compile_options (-Werror)
+    endif ()
+endif()
 
 # check dependencies
 ###############################################################################
