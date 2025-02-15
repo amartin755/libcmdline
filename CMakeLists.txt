@@ -28,7 +28,6 @@ check_symbol_exists (getopt_long "getopt.h" HAVE_GETOPTLONG)
 
 # preprocessor definitions
 ###############################################################################
-add_compile_definitions (APP_VERSION="${PROJECT_VERSION}")
 if (HAVE_GETOPT)
     add_compile_definitions (HAVE_GETOPT)
 endif ()
@@ -52,20 +51,20 @@ target_sources (cmdline PRIVATE ${LIB_SOURCES})
 target_include_directories (cmdline
     PUBLIC ${LIB_DIR})
 
-# target unittest (unit test code)
+# target cmdline-unittest (unit test code)
 ###############################################################################
 if (WITH_UNITTESTS)
 
-    add_executable (unittest)
+    add_executable (cmdline-unittest)
 
-    target_compile_definitions (unittest PRIVATE WITH_UNITTESTS)
+    target_compile_definitions (cmdline-unittest PRIVATE WITH_UNITTESTS)
     if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        target_compile_options (unittest PRIVATE -Wno-write-strings --coverage)
-        target_link_libraries (unittest PRIVATE gcov)
+        target_compile_options (cmdline-unittest PRIVATE -Wno-write-strings --coverage)
+        target_link_libraries (cmdline-unittest PRIVATE gcov)
     endif()
 
-    target_sources(unittest PRIVATE unittest/unittest.cpp ${LIB_SOURCES})
-    target_include_directories (unittest PRIVATE ${LIB_DIR})
+    target_sources(cmdline-unittest PRIVATE unittest/unittest.cpp ${LIB_SOURCES})
+    target_include_directories (cmdline-unittest PRIVATE ${LIB_DIR})
 endif ()
 
 # example demo application
