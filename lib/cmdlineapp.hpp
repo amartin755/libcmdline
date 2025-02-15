@@ -23,7 +23,7 @@
 #include "cmdline.hpp"
 #include "console.hpp"
 #include <string>
-#include <list>
+#include <vector>
 
 class cCmdlineApp
 {
@@ -91,7 +91,7 @@ public:
             return -1;
         }
 
-        std::list <std::string> args;
+        std::vector <std::string> args(argc-index);
 
         for (int n = index; n < argc; n++)
         {
@@ -102,7 +102,7 @@ public:
     }
 
 protected:
-    virtual int execute (const std::list<std::string>& args) = 0;
+    virtual int execute (const std::vector<std::string>& args) = 0;
     void printUsage ()
     {
         Console::Print ("\n%s %s - %s\n\nUsage: %s\n\nOptions:\n", name, version, brief, usage);

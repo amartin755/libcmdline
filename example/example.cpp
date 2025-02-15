@@ -32,7 +32,7 @@ Example::~Example()
 {
 }
 
-int Example::execute (const std::list<std::string>& args)
+int Example::execute (const std::vector<std::string>& args)
 {
     Console::Print ("--- options --- \n");
     Console::Print ("-a = %d\n", m_options.argA);

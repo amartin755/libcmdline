@@ -51,7 +51,7 @@ public:
     Example (const char* name, const char* brief, const char* usage, const char* description, const char* version);
     virtual ~Example();
 
-    int execute (const std::list<std::string>& args);
+    int execute (const std::vector<std::string>& args);
 
 private:
     appOptions m_options;
