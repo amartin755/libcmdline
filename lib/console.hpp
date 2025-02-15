@@ -28,19 +28,20 @@
 class Console
 {
 public:
-    static bool PrintError (const char* format, ...);
-    static bool Print (const char* format, ...);
-    static bool PrintVerbose (const char* format, ...);
-    static bool PrintMoreVerbose (const char* format, ...);
-    static bool PrintMostVerbose (const char* format, ...);
-    static bool PrintDebug (const char* format, ...);
+    static int PrintError (const char* format, ...);
+    static int Print (const char* format, ...);
+    static int PrintVerbose (const char* format, ...);
+    static int PrintMoreVerbose (const char* format, ...);
+    static int PrintMostVerbose (const char* format, ...);
+    static int PrintDebug (const char* format, ...);
     static void Clear ();
+    static void PrintWrapedText(const char* text, size_t lineWidth, size_t firstIndent = 0, size_t otherIndent = 0);
 
     enum out_level {Silent = 1, Error = 2, Normal = 3, Verbose = 4, MoreVerbose = 5, MostVerbose = 6, Debug = 7};
     static void SetPrintLevel (out_level lvl);
 
 private:
-    static bool print (out_level lvl, const char* format, va_list ap);
+    static int print (out_level lvl, const char* format, va_list ap);
 
 private:
     static out_level level;

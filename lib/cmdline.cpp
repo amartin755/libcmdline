@@ -19,6 +19,7 @@
 
 #include <cstring>
 #include <cstdlib>
+#include <sstream>
 
 #include "ketopt.h"
 
@@ -175,34 +176,49 @@ bool cCmdline::parse (int* optind)
     return ret;
 }
 
-
 void cCmdline::printOptions ()
 {
-    //FIXME still incomplete
+    const int COL_OPT_START = 1;
+    const int COL_DESC_START = 25;
+    const int COL_MAX = 100;
+
     for (unsigned n = 0; n < options.size (); n++)
     {
+        std::stringstream s;
+        s << std::string (COL_OPT_START, ' ');
         if (options.at (n).shortname < NO_SHORTNAME)
         {
-            Console::Print ("-%c ", options.at (n).shortname);
+            s << "-" << (char)options.at (n).shortname;
             if (options.at (n).hasArg)
-                Console::Print ("%s ", options.at (n).argname);
-        }
+                s << " <" << options.at (n).argname << ">";
+            if (options.at (n).longname)
+                s << ", ";
+            }
         if (options.at (n).longname)
         {
-            Console::Print ("--%s", options.at (n).longname);
+            s << "--" << options.at (n).longname;
             if (options.at (n).hasArg)
             {
                 if (options.at (n).hasOptionalArg)
-                    Console::Print ("[=%s] ", options.at (n).argname);
+                    s << " [" << options.at (n).argname << "]";
                 else
-                    Console::Print ("=%s ", options.at (n).argname);
+                    s << " <" << options.at (n).argname << ">";
             }
         }
-        Console::Print ("\n\t");
+        Console::Print ("%s\n", s.str().c_str());
 
         if (options.at (n).description)
-            Console::Print ("%s", options.at (n).description);
-        Console::Print ("\n");
+        {
+//            if (COL_DESC_START > s.str().size())
+//            {
+//                Console::PrintWrapedText (options.at (n).description, COL_MAX, COL_DESC_START - s.str().size() ,COL_DESC_START);
+//            }
+//            else
+//            {
+//               Console::Print ("\n");
+                 Console::PrintWrapedText (options.at (n).description, COL_MAX, COL_DESC_START, COL_DESC_START);
+//            }
+        }
     }
 }
 

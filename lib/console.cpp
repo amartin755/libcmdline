@@ -19,6 +19,7 @@
 
 #include <cstdarg>
 #include <cstdio>
+#include <sstream>
 
 #include "console.hpp"
 #include "bug.hpp"
@@ -35,9 +36,9 @@ void Console::SetPrintLevel (out_level lvl)
     level = lvl;
 }
 
-bool Console::PrintError (const char* format, ...)
+int Console::PrintError (const char* format, ...)
 {
-    bool ret;
+    int ret;
     va_list args;
     va_start (args, format);
 
@@ -46,9 +47,9 @@ bool Console::PrintError (const char* format, ...)
     va_end (args);
     return ret;
 }
-bool Console::Print (const char* format, ...)
+int Console::Print (const char* format, ...)
 {
-    bool ret;
+    int ret;
     va_list args;
     va_start (args, format);
 #ifdef MT_CONSOLE
@@ -62,9 +63,9 @@ bool Console::Print (const char* format, ...)
     va_end (args);
     return ret;
 }
-bool Console::PrintVerbose (const char* format, ...)
+int Console::PrintVerbose (const char* format, ...)
 {
-    bool ret;
+    int ret;
     va_list args;
     va_start (args, format);
 
@@ -73,9 +74,9 @@ bool Console::PrintVerbose (const char* format, ...)
     va_end (args);
     return ret;
 }
-bool Console::PrintMoreVerbose (const char* format, ...)
+int Console::PrintMoreVerbose (const char* format, ...)
 {
-    bool ret;
+    int ret;
     va_list args;
     va_start (args, format);
 
@@ -84,9 +85,9 @@ bool Console::PrintMoreVerbose (const char* format, ...)
     va_end (args);
     return ret;
 }
-bool Console::PrintMostVerbose (const char* format, ...)
+int Console::PrintMostVerbose (const char* format, ...)
 {
-    bool ret;
+    int ret;
     va_list args;
     va_start (args, format);
 
@@ -95,9 +96,9 @@ bool Console::PrintMostVerbose (const char* format, ...)
     va_end (args);
     return ret;
 }
-bool Console::PrintDebug (const char* format, ...)
+int Console::PrintDebug (const char* format, ...)
 {
-    bool ret;
+    int ret;
     va_list args;
     va_start (args, format);
 
@@ -107,19 +108,55 @@ bool Console::PrintDebug (const char* format, ...)
     return ret;
 }
 
+void Console::PrintWrapedText(const char* text, size_t lineWidth, size_t firstIndent, size_t otherIndent)
+{
+    std::istringstream words(text);
+    std::string word;
+    bool isFirstLine = true;
+    std::string line(firstIndent, ' ');
+
+    while (words >> word)
+    {
+        bool linebreak = false;
+        if (word == "</br>")
+        {
+            linebreak = true;
+            word = "";
+        }
+        if (linebreak || line.length() + word.length() + 1 > lineWidth)
+        {
+            Console::Print ("%s\n", line.c_str());
+            line = std::string(otherIndent, ' ') + word;
+            isFirstLine = false;
+        }
+        else
+        {
+            if (line.length() > (isFirstLine ? firstIndent : otherIndent))
+            {
+                line += " ";
+            }
+            line += word;
+        }
+    }
+    if (!line.empty())
+    {
+        Console::Print ("%s\n", line.c_str());
+    }
+}
+
 void Console::Clear ()
 {
     Console::Print ("%c[2J", (char)27);
     Console::Print ("%c[H", (char)27);
 }
 
-bool Console::print (out_level lvl, const char* format, va_list ap)
+int Console::print (out_level lvl, const char* format, va_list ap)
 {
     if (lvl > level)
         return false;
 
      // we always print to stderr to be able to separate piped in/output from console prints
-    bool ret = vfprintf (stderr, format, ap) >= 0;
+    int ret = vfprintf (stderr, format, ap) >= 0;
     fflush (stderr);
     return ret;
 }

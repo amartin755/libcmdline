@@ -44,11 +44,10 @@ public:
             verbosity = 0;
 
             cmdline.addOption  (true, 'h', "help", "Display this text", &helpRequested, nullptr, ARG_NO, nullptr, false, true);
-            cmdline.addOption  (true, 0, "version", "Show detailed version infos", &versionRequested, nullptr, ARG_NO, nullptr, false, true);
+            cmdline.addOption  (true, 0, "version", "Show detailed version information", &versionRequested, nullptr, ARG_NO, nullptr, false, true);
             addCmdLineOption (true, 'v', "verbose",
-                    "When parsing and printing, produce verbose output. This option can be supplied multiple times\n\t"
-                    "(max. 4 times, i.e. -vvvv) for even more debug output. "
-                    , &verbosity);
+                "Produce verbose output when parsing and printing. This option can be supplied multiple times (up to 4 times, e.g., -vvvv) for even more debug output."
+                , &verbosity);
     }
     virtual ~cCmdlineApp ()
     {
@@ -91,7 +90,7 @@ public:
             return -1;
         }
 
-        std::vector <std::string> args(argc-index);
+        std::vector <std::string> args;
 
         for (int n = index; n < argc; n++)
         {
@@ -105,9 +104,13 @@ protected:
     virtual int execute (const std::vector<std::string>& args) = 0;
     void printUsage ()
     {
-        Console::Print ("\n%s %s - %s\n\nUsage: %s\n\nOptions:\n", name, version, brief, usage);
+        Console::Print ("%s %s - %s\n\nUsage: ", name, version, brief);
+        Console::PrintWrapedText (usage, 100, 0, 7);
+        Console::Print ("\n");
         cmdline.printOptions ();
-        Console::Print ("\n%s\n\n", description);
+        Console::Print ("\n");
+        Console::PrintWrapedText (description, 100);
+        Console::Print ("\n");
     }
     void printVersion ()
     {
