@@ -31,23 +31,23 @@ public:
     cCmdlineApp (const char* name, const char* brief, const char* usage, const char* description, const char* version,
         const char* build = nullptr, const char* buildDetails = nullptr)
     {
-            this->name = name;
-            this->brief = brief;
-            this->usage = usage;
-            this->description = description;
-            this->version = version;
-            this->build = build;
-            this->buildDetails = buildDetails;
+            m_name = name;
+            m_brief = brief;
+            m_usage = usage;
+            m_description = description;
+            m_version = version;
+            m_build = build;
+            m_buildDetails = buildDetails;
 
-            helpRequested = 0;
-            versionRequested = 0;
-            verbosity = 0;
+            m_helpRequested = 0;
+            m_versionRequested = 0;
+            m_verbosity = 0;
 
-            cmdline.addOption  (true, 'h', "help", "Display this text", &helpRequested, nullptr, ARG_NO, nullptr, false, true);
-            cmdline.addOption  (true, 0, "version", "Show detailed version information", &versionRequested, nullptr, ARG_NO, nullptr, false, true);
+            m_cmdline.addOption  (true, 'h', "help", "Display this text", &m_helpRequested, nullptr, ARG_NO, nullptr, false, true);
+            m_cmdline.addOption  (true, 0, "version", "Show detailed version information", &m_versionRequested, nullptr, ARG_NO, nullptr, false, true);
             addCmdLineOption (true, 'v', "verbose",
                 "Produce verbose output when parsing and printing. This option can be supplied multiple times (up to 4 times, e.g., -vvvv) for even more debug output."
-                , &verbosity);
+                , &m_verbosity);
     }
     virtual ~cCmdlineApp ()
     {
@@ -55,9 +55,9 @@ public:
     int main (int argc, char* argv[])
     {
         int index = 0;
-        bool parseOk = cmdline.parse (argc, argv, &index);
+        bool parseOk = m_cmdline.parse (argc, argv, &index);
 
-        switch (verbosity)
+        switch (m_verbosity)
         {
         case 1:
             Console::SetPrintLevel(Console::Verbose);
@@ -73,12 +73,12 @@ public:
             break;
         }
 
-        if (helpRequested)
+        if (m_helpRequested)
         {
             printUsage ();
             return 0;
         }
-        if (versionRequested)
+        if (m_versionRequested)
         {
             printVersion ();
             return 0;
@@ -104,66 +104,66 @@ protected:
     virtual int execute (const std::vector<std::string>& args) = 0;
     void printUsage ()
     {
-        Console::Print ("%s %s - %s\n\nUsage: ", name, version, brief);
-        Console::PrintWrapedText (usage, 100, 0, 7);
+        Console::Print ("%s %s - %s\n\nUsage: ", m_name, m_version, m_brief);
+        Console::PrintWrapedText (m_usage, 100, 0, 7);
         Console::Print ("\n");
-        cmdline.printOptions ();
+        m_cmdline.printOptions ();
         Console::Print ("\n");
-        Console::PrintWrapedText (description, 100);
+        Console::PrintWrapedText (m_description, 100);
         Console::Print ("\n");
     }
     void printVersion ()
     {
-        if (build)
-            Console::Print ("%s %s (%s)\n", name, version, build);
+        if (m_build)
+            Console::Print ("%s %s (%s)\n", m_name, m_version, m_build);
         else
-            Console::Print ("%s %s\n", name, version);
-        if (buildDetails)
-            Console::Print ("build: %s\n", buildDetails);
+            Console::Print ("%s %s\n", m_name, m_version);
+        if (m_buildDetails)
+            Console::Print ("build: %s\n", m_buildDetails);
     }
 
     // adds (optional) integer option with argument
     bool addCmdLineOption (bool optional, char shortname, const char* longname, const char* argname, const char* description,
             int* arg)
     {
-        return cmdline.addOption (optional, shortname, longname, description, nullptr, argname, ARG_INT, (void*)arg, false);
+        return m_cmdline.addOption (optional, shortname, longname, description, nullptr, argname, ARG_INT, (void*)arg, false);
     }
     // adds (optional) integer long-only-option with optional argument
     bool addCmdLineOption (bool optional, const char* longname, const char* argname, const char* description,
             int* optSet, int* arg)
     {
-        return cmdline.addOption (optional, 0, longname, description, optSet, argname, ARG_INT, (void*)arg, true);
+        return m_cmdline.addOption (optional, 0, longname, description, optSet, argname, ARG_INT, (void*)arg, true);
     }
     // adds (optional) string option with argument
     bool addCmdLineOption (bool optional, char shortname, const char* longname, const char* argname, const char* description,
             const char** arg)
     {
-        return cmdline.addOption (optional, shortname, longname, description, nullptr, argname, ARG_STRING, (void*)arg, false);
+        return m_cmdline.addOption (optional, shortname, longname, description, nullptr, argname, ARG_STRING, (void*)arg, false);
     }
     // adds (optional) string long-only-option with optional argument
     bool addCmdLineOption (bool optional, const char* longname, const char* argname, const char* description,
             int* optSet, const char** arg)
     {
-        return cmdline.addOption (optional, 0, longname, description, optSet, argname, ARG_STRING, (void*)arg, true);
+        return m_cmdline.addOption (optional, 0, longname, description, optSet, argname, ARG_STRING, (void*)arg, true);
     }
     // adds boolean (optional) option without argument
     bool addCmdLineOption (bool optional, char shortname, const char* longname, const char* description, int* optSet)
     {
-        return cmdline.addOption (optional, shortname, longname, description, optSet);
+        return m_cmdline.addOption (optional, shortname, longname, description, optSet);
     }
 
 private:
-    const char* name;
-    const char* brief;
-    const char* usage;
-    const char* description;
-    const char* version;
-    const char* build;
-    const char* buildDetails;
-    int helpRequested;
-    int versionRequested;
-    int verbosity;
-    cCmdline cmdline;
+    const char* m_name;
+    const char* m_brief;
+    const char* m_usage;
+    const char* m_description;
+    const char* m_version;
+    const char* m_build;
+    const char* m_buildDetails;
+    int m_helpRequested;
+    int m_versionRequested;
+    int m_verbosity;
+    cCmdline m_cmdline;
 };
 
 #endif /* CMDLINE_HPP_ */
