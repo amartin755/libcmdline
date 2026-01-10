@@ -7,11 +7,6 @@ project (libcmdline VERSION 0.0.1
 ###############################################################################
 
 
-# set output directories to "bin"
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
-set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
-set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
-
 # compiler settings
 ###############################################################################
 # C++11 is required
